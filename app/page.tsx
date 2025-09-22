@@ -91,12 +91,7 @@ export default function HFTLabsLanding() {
       answer:
         "We protect all users through Coinbase embedded wallets which are self-custodial by defualt. Built on trusted Coinbase infrastucture, they enable instant on-chain functionality and enterprise grade security.",
     },
-    {
-      question: "How do I get started with HFT Labs?",
-      answer:
-        "Getting started is simple: create an account, complete the verification process, connect your wallet, and choose your investment strategy. Our onboarding process guides you through each step, and our support team is available to help.",
-    },
-    {
+     {
       question: "What cryptocurrencies and DeFi protocols do you support?",
       answer:
         "We support major cryptocurrencies including Bitcoin and Ethereum. Our platform interacts with major defi protocols such as Aerodrome on the base network. Learn more here.",
