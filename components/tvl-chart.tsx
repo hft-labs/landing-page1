@@ -1,22 +1,18 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
   ChartConfig,
   ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
 } from "@/components/ui/chart";
 
-const BASE_API = process.env.NEXT_PUBLIC_API_URL;
-
-interface TVLDataPoint {
+export interface TVLDataPoint {
   tvl: number;
   date: string;
 }
 
-interface ChartDataPoint {
+export interface ChartDataPoint {
   date: string;
   tvl: number;
 }
@@ -55,45 +51,12 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function TVLChart() {
-  const [tvlData, setTvlData] = useState<ChartDataPoint[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+interface TVLChartProps {
+  data: ChartDataPoint[];
+  error?: string | null;
+}
 
-  useEffect(() => {
-    const fetchTVLData = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-        const url = `${BASE_API}/platform/api/tvl`;
-        const response = await fetch(url);
-        
-        if (!response.ok) {
-          throw new Error(`Failed to fetch TVL data: ${response.statusText}`);
-        }
-        
-        const data: TVLDataPoint[] = await response.json();
-        
-        // Transform API data to chart format
-        const transformedData: ChartDataPoint[] = data
-          .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-          .map((point) => ({
-            date: point.date,
-            tvl: point.tvl,
-          }));
-        
-        setTvlData(transformedData);
-      } catch (err) {
-        console.error("Error fetching TVL data:", err);
-        setError(err instanceof Error ? err.message : "Failed to fetch TVL data");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchTVLData();
-  }, []);
-
+export function TVLChart({ data: tvlData, error }: TVLChartProps) {
   const { currentTVL, currentTVLUnit } = useMemo(() => {
     if (tvlData.length === 0) {
       return { currentTVL: "0", currentTVLUnit: "" };
@@ -102,21 +65,6 @@ export function TVLChart() {
     const { formatted, unit } = formatValue(latestValue);
     return { currentTVL: formatted, currentTVLUnit: unit };
   }, [tvlData]);
-
-  if (isLoading) {
-    return (
-      <div className="w-full max-w-xl px-2">
-        <div className="flex flex-wrap items-center justify-between gap-6">
-          <div>
-            <p className="text-[0.75rem] uppercase tracking-[0.6em] text-white/40">
-              Platform TVL
-            </p>
-            <h2 className="mt-3 text-5xl font-semibold text-white">Loading...</h2>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   if (error) {
     return (
@@ -220,26 +168,6 @@ export function TVLChart() {
                 fill: "rgba(255,255,255,0.45)",
                 fontSize: "10px",
               }}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={
-                <ChartTooltipContent
-                  labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    });
-                  }}
-                  formatter={(value) => {
-                    const { formatted, unit } = formatValue(value as number);
-                    return `$${formatted}${unit}`;
-                  }}
-                  indicator="dot"
-                />
-              }
             />
             <Area
               dataKey="tvl"

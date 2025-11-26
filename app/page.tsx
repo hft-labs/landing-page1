@@ -1,19 +1,19 @@
 import React from "react";
-import { TVLChart } from "@/components/tvl-chart";
+import { TVLChartWrapper } from "@/components/tvl-chart-wrapper";
 
 export default function LandingPage() {
   const iconSize = 20;
 
   return (
-    <div className="relative min-h-screen bg-black text-white">
-      <header className="absolute left-8 top-8">
-          <img src="/HFT Labs Banner.svg" alt="HFT Labs" className="h-16 w-auto" />
+    <div className="relative min-h-screen bg-black text-white flex flex-col">
+      <header className="px-8 pt-6 pb-2">
+          <img src="/HFT Labs Banner.svg" alt="HFT Labs" className="h-12 w-auto" />
       </header>
 
-      <section className="flex min-h-screen items-center px-6 py-20">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 lg:flex-row lg:items-center lg:gap-16">
-          <div className="flex-1 space-y-6 text-left">
-            <div className="space-y-4">
+      <section className="flex flex-1 items-center px-6 py-4 lg:py-8">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 lg:flex-row lg:items-center lg:gap-12">
+          <div className="flex-1 space-y-4 text-left">
+            <div className="space-y-3">
               <p className="text-base text-white/70 sm:text-lg">
                 <span className="font-semibold text-white">hft.studio</span> is developed by HFT Labs. It is an advanced concentrated liquidity management platform for professionals.
               </p>
@@ -30,12 +30,12 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="flex-1">
-            <TVLChart />
+            <TVLChartWrapper />
           </div>
         </div>
       </section>
 
-      <div className="pointer-events-auto fixed bottom-8 right-8 flex items-center justify-end gap-6">
+      <footer className="px-8 pb-4 pt-2 flex items-center justify-end gap-6">
         <div className="flex items-center justify-center space-x-8">
           <a
             href="https://github.com/hft-studio"
@@ -125,7 +125,7 @@ export default function LandingPage() {
             </svg>
           </a>
         </div>
-      </div>
+      </footer>
     </div>
   );
 }
